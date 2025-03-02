@@ -1,0 +1,32 @@
+# Root level
+node_modules/
+.DS_Store
+.env
+.env.local
+.idea/
+.vscode/
+
+# Frontend specific
+/frontend/node_modules/
+/frontend/build/
+/frontend/dist/
+
+# Python/Backend specific
+/backend/__pycache__/
+/backend/*.py[cod]
+/backend/*$py.class
+/backend/.env
+/backend/.venv
+/backend/env/
+/backend/venv/
+/backend/ENV/
+/backend/.python-version
+/backend/pythonenv*
+/backend/.pytest_cache/
+/backend/.coverage
+/backend/htmlcov/
+/backend/*.so
+/backend/db.sqlite3
+/backend/instance/
+/backend/.webassets-cache
+/backend/.ipynb_checkpoints
