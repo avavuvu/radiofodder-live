@@ -10,7 +10,7 @@ python main.py &
 BACKEND_PID=$!
 
 # Start frontend
-cd ../frontend
+cd ../vue
 npm run dev &
 FRONTEND_PID=$!
 
