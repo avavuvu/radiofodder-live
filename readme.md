@@ -6,4 +6,4 @@ gcloud builds submit --region=us-west2 --tag us-west2-docker.pkg.dev/radiofodder
 # deploying frontend
 firebase deploy
 
-# glhf
+# glhf <3
