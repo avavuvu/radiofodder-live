@@ -1,9 +1,35 @@
 <script setup lang="ts">
-    import { fetchArtists } from '@/lib/fetchArtists';
+    import { fetchArtists, fetchArtist } from '@/lib/fetchArtists';
     import PlaceholderArtwork from '../placeholder/PlaceholderArtwork.vue';
     import { getJsonContent } from '@/lib/getJsonContent';
+    import { fetchDaySchedule } from '@/lib/useDaySchedule';
+    import type { Artist } from '@/lib/types';
 
-    const artists = await fetchArtists()
+    const fetchArtistsAndSchedule = async () => {
+        const daySchedule = await fetchDaySchedule()
+
+        let artists: Artist[] = []
+
+        for (const scheduleEvent of daySchedule) {
+            const artistId = scheduleEvent.artistIds?.[0]
+
+            if (!artistId) {
+                //TODO: return a default "show" object
+                console.log("No artsit attachted to event:", scheduleEvent)
+                continue
+            }
+
+            console.log(await fetchArtist(artistId))
+
+            artists.push(await fetchArtist(artistId))
+        }
+
+        return artists
+    }
+
+    const artists = await fetchArtistsAndSchedule()
+
+
 
     interface SocialsInterface  {
         twitterHandle?: string;

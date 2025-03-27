@@ -1,4 +1,4 @@
-import { DateTime } from "luxon";
+import { DateTime, Info } from "luxon";
 import type { ScheduleEvent } from "./scheduleTypes";
 
 export type FormattedScheduleEvent = {
@@ -51,22 +51,28 @@ export const convertScheduleData = (schedule: ScheduleEvent): FormattedScheduleE
     };
 }
 
+type Weekdays = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"
+
 export const generateScheduleData = (schedules: ScheduleEvent[]) => {
-    const daysOfWeek: Record<string, EventDisplay[]> = {
-        "Monday": [],
-        "Tuesday": [],
-        "Wednesday": [],
-        "Thursday": [],
-        "Friday": [],
-        "Saturday": [],
-        "Sunday": [],
+    const firstEvent = schedules.at(0)
+    if(!firstEvent) {
+        return []
     }
+
+    const firstEventStartTime = DateTime.fromISO(firstEvent.start).setZone(firstEvent.timezone);
+    const daysOfWeek: [Weekdays, EventDisplay[]][] = Array.from({length: 7}, (_, index) => {
+        const zeroIndexedWeekday = firstEventStartTime.weekday - 1
+        const weekdayNumber = (zeroIndexedWeekday + index + 7) % 7
+        const weekdayString = Info.weekdays("long", {})[weekdayNumber] as Weekdays
+
+        return [weekdayString, []]
+    })
 
     for (const schedule of schedules) {
         const event = convertScheduleData(schedule)
 
         const weekday = event.start.weekdayLong!;
-        const events = daysOfWeek[weekday];
+        const events = daysOfWeek.find(([day,]) => day === weekday)![1];
         const lastEvent = events.at(-1);
 
         if (
@@ -76,12 +82,12 @@ export const generateScheduleData = (schedules: ScheduleEvent[]) => {
             events.push({ 
                 type: "break",
                 start: lastEvent.end,
-                end: event.end
+                end: event.start
             })
         }
 
         events.push(event);
     }
 
-    return Object.entries(daysOfWeek);
+    return daysOfWeek;
 };

@@ -7,8 +7,7 @@
 
     const schedule = await fetchWeekSchedule()
 
-    const now = DateTime.local();
-    const startOfWeek = DateTime.local().startOf("week")
+    const startOfSchedule = DateTime.local();
 
     const horses = [
         "assets/horse/horse1.svg",
@@ -32,9 +31,9 @@
     <div class="max-w-[800px] mx-auto px-2 text-black">
         <div class="font-serif text-center pb-8">
             <h1 class="text-6xl font-bold">
-                {{now.year}} Schedule
+                {{startOfSchedule.year}} Schedule
             </h1>
-            <p>for the week starting on {{startOfWeek.toFormat("DDDD")}}</p>
+            <p>for the week starting on {{startOfSchedule.toFormat("DDDD")}}</p>
         </div>
 
         
@@ -43,7 +42,7 @@
                 class="grid grid-cols-[1fr_1fr_1fr] font-serif h-[50vh] max-w-[400px] mx-auto">
                 <div
                     class="col-start-1 col-end-3 row-start-1 row-end-2 aspect-square
-                    bg-[blue]"
+                    bg-primary"
                 ></div>
                 <div
                     class="col-start-1 col-end-4 row-start-1 row-end-2 relative"
@@ -67,8 +66,8 @@
                     col-start-2 col-end-4 row-start-1 row-end-2 flex items-center justify-end"
                 >
                     <p>
-                        {{startOfWeek.plus({day: index}).monthLong}}
-                        {{toOrdinal(startOfWeek.plus({day: index}).day)}}
+                        {{startOfSchedule.plus({day: index}).monthLong}}
+                        {{toOrdinal(startOfSchedule.plus({day: index}).day)}}
                     </p>
                 </div>
             </div>
@@ -77,9 +76,10 @@
                 <div class="mb-20">
                     <div v-for="event in events">
                         <ScheduleItem
-                            :event
-                            v-if="event.type === 'schedule'">
+                             v-if="event.type === 'schedule'"
+                            :event>
                         </ScheduleItem>
+
                         <div
                             v-else-if="event.type === 'break'" 
                             class="mx-auto max-w-[200px]">

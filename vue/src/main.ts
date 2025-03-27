@@ -46,7 +46,7 @@ const customRadioFodderTheme = definePreset(Aura, {
                     hoverMutedColor: '{surface.600}'
                 },
                 primary: {
-                    color: '#fff517',
+                    color: '#418BFC',
                     inverseColor: '#000000',
                     hoverColor: '#eed258',
                     activeColor: '{zinc.800}', 

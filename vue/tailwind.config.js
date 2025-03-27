@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       maxWidth: {
-        "main": "1024px"
+        "main": "1200px"
       }
     },
     fontFamily: {

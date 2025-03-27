@@ -17,12 +17,9 @@
 </script>
 
 <template >
-    <main class="max-w-main mx-auto">
-        <h1 class="text-4xl">Radio Fodder</h1>
-        <p>The University of Melbourne Student Radio Station</p>
-
-        <div class="flex gap-8 flex-col md:flex-row lg:flex-row">
-            <div class="w-52 md:w-96 lg:w-96 aspect-square border-2 border-surface-950 bg-primary mx-auto">
+    <div class="flex items-center justify-center min-h-[500px] gap-8 flex-col md:flex-row lg:flex-row">
+        <div class="flex  gap-2 flex-col md:flex-row lg:flex-row w-full lg:w-auto">
+            <div class="w-52 md:w-96 lg:w-96 aspect-square border-2 border-black">
                 <div v-if="isSuccess && data?.metadata.artwork">
                     <img 
                         class="w-full h-full p-8"
@@ -32,7 +29,7 @@
                     <PlaceholerArtwork/>
                 </div>
             </div>
-
+    
             <div class="w-48 md:w-96 lg:w-96 mx-auto lg:mx-0">
                 <div class="flex gap-2">
                     <h2 class="w-24">Now Playing:</h2>
@@ -48,7 +45,7 @@
                         <h2>{{ data!.metadata.artist }}</h2>
                     </div>
                 </div>
-
+    
                 <div class="flex gap-2 mt-4">
                     <h2 class=" w-24">Coming Up:</h2>
                     <div v-if="isDayLoading">
@@ -68,40 +65,41 @@
                     </div>
                 </div>
             </div>
+
         </div>
+    </div>
 
-        <section>
-            <h1 class="text-4xl">Our Shows</h1>
-            <Suspense>
-                <template #default>
-                    <ArtistsList />
-                </template>
-                <template #fallback>
-                    <ul class="ml-8">
-                        <li v-for="artist in ['','','']" >
-                            <div class="flex h-24 gap-2 m-4">
-                                <div class="h-full aspect-square border-2 border-surface-900">
-                                    <div class="h-full ">
-                                    </div>
+    <section>
+        <h1 class="text-2xl">Our Shows</h1>
+        <Suspense>
+            <template #default>
+                <ArtistsList />
+            </template>
+            <template #fallback>
+                <ul class="ml-8">
+                    <li v-for="artist in ['','','']" >
+                        <div class="flex h-24 gap-2 m-4">
+                            <div class="h-full aspect-square border-2 border-surface-900">
+                                <div class="h-full ">
                                 </div>
-
-                                <div>
-                                    <Skeleton width="12rem" class="my-1"/>
-                    
-                                    <Skeleton width="24rem" class="my-1"/>
-
-                                    <Skeleton width="6rem" class="my-1"/>
-
-                                </div>
-
-                                
                             </div>
-                        </li>
-                    </ul>
-                </template>
-            </Suspense>
-        </section>
-    </main>
+
+                            <div>
+                                <Skeleton width="12rem" class="my-1"/>
+                
+                                <Skeleton width="24rem" class="my-1"/>
+
+                                <Skeleton width="6rem" class="my-1"/>
+
+                            </div>
+
+                            
+                        </div>
+                    </li>
+                </ul>
+            </template>
+        </Suspense>
+    </section>
 
 
 </template>

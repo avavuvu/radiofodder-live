@@ -11,6 +11,7 @@
     "type-check": "vue-tsc --build"
   },
   "dependencies": {
+    "@primevue/forms": "^4.3.3",
     "@primevue/themes": "^4.2.5",
     "@tanstack/vue-query": "^5.62.9",
     "@types/luxon": "^3.4.2",
