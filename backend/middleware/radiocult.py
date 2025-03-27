@@ -3,6 +3,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from fastapi import FastAPI, Request, Response
 import httpx
 
+## Add api key automatically to requests
 class RadoicultMiddleware(BaseHTTPMiddleware):
     def __init__(self, app: FastAPI, api_key: str, api_url: str):
         super().__init__(app)
