@@ -120,7 +120,7 @@ import Footer from './components/index/Footer.vue';
             </div>
         </div>
         <div class="w-[30rem] sticky top-0 h-screen">
-            <!-- <iframe
+            <iframe
                 title="Radio Fodder chat room"
                 src="https://app.radiocult.fm/embed/chat/radio-fodder?theme=midnight&primaryColor=%23e1c7ff&corners=rounded&removeRcBranding=true"
                 width="100%"
@@ -131,7 +131,7 @@ import Footer from './components/index/Footer.vue';
                 allowtransparency="true"
                 style=""
                 >
-            </iframe> -->
+            </iframe>
 
           </div>
       </div>
