@@ -4,6 +4,7 @@
     import { getBasicJsonContent, getHtmlFromTipTapJson, getYamlFromTipTapJson } from '@/lib/getJsonContent';
     import { fetchDaySchedule } from '@/lib/useDaySchedule';
     import type { Artist, CustomShowMetadata } from '@/lib/types';
+    import { Accordion, AccordionPanel, AccordionHeader, AccordionContent } from 'primevue';
 
     // const fetchArtistsAndSchedule = async () => {
     //     const daySchedule = await fetchDaySchedule()
@@ -39,65 +40,28 @@
             metadata: metadata
         }
     })
-
-    interface SocialsInterface  {
-        twitterHandle?: string;
-        instagramHandle?: string;
-        facebook?: string;
-        mixcloud?: string;
-        soundcloud?: string;
-        site?: string;
-    }
-
-    const socialsMap: {[K in keyof SocialsInterface]: { icon: string, site: string}} = {
-        "twitterHandle": {
-            icon: "pi-twitter",
-            site: "https://twitter.com/"
-        },
-        "instagramHandle": {
-            icon: "pi-instagram",
-            site: "https://instagram.com/"
-        },
-        "facebook": {
-            icon: "pi-facebook",
-            site: ""
-        },
-        "mixcloud": {
-            icon: "pi-headphones",
-            site: ""
-        },
-        "soundcloud": {
-            icon: "pi-cloud",
-            site: ""
-        },
-        "site": {
-            icon: "pi-link",
-            site: ""
-        }
-    } as const
 </script>
 
 <template>
-    <ul class="">
-        <li v-for="{artist, metadata} in artists" >
-            <div class="flex h-32 gap-2 m-4 max-w-[100ch]">
+    <Accordion class="transition-all" >
+        <AccordionPanel 
+            v-for="{artist, metadata}, index in artists" 
+            :value="index" class="mb-12 max-w-[100ch]" >
+
+            <AccordionHeader class="flex h-32 gap-2 m-4 !text-color hover:!text-color">
                 <component
                     :is="artist.socials?.instagramHandle ? 'a' : 'span'"
                     :href="artist.socials?.instagramHandle ? `https://instagram.com/${artist.socials.instagramHandle}`: ''"
                     target="_blank" rel="noopener noreferrer"
-                    class="h-full aspect-square border-2 border-surface-900 block">
+                    class="h-32 aspect-square border-2 border-surface-900 block">
                     <img v-if="artist.logo?.default" class="h-full object-cover" :src="artist.logo?.default">
-                    <div v-else class="h-full">
+                    <div v-else class="h-32">
                         <PlaceholderArtwork/>
                     </div>
                 </component>
 
-                <div class="w-full">
-                    <component 
-                        :is="artist.socials?.instagramHandle ? 'a' : 'span'"
-                        :href="artist.socials?.instagramHandle ? `https://instagram.com/${artist.socials.instagramHandle}`: ''"
-                        target="_blank" rel="noopener noreferrer"
-                        class="inline-flex justify-between w-full"
+                <div class="w-full px-4">
+                    <span 
                         v-if="artist.name" >
                         <span>
                             <span class="font-bold">
@@ -107,24 +71,43 @@
                                 – with {{ metadata.hosts }}
                             </span> 
                         </span>
-                        <span v-if="artist.socials?.instagramHandle">
-                            <i class="pi pi-external-link" style="font-size: .75rem"></i>
-                        </span>
-                    </component> 
+                    </span> 
                     <span v-else class="italic font-bold">no artist name</span>
     
-                    <div class="line-clamp-2 ml-2" 
-                        v-if="artist.description" 
-                        v-html="getHtmlFromTipTapJson(artist.description)"></div>
+                    
 
-                    <span v-if="metadata && metadata.showtime">
-                        {{ metadata.showtime }}
-                    </span>
+                </div>                
+            </AccordionHeader>
+            <AccordionContent >
+                <div class="px-8 py-2">
+                    <div class="" 
+                        v-if="artist.description" 
+                        v-html="getHtmlFromTipTapJson(artist.description)">
+                    </div>
+                    <div class="" 
+                        v-else-if="artist.description === undefined" >
+                        <p class="italic">No description</p>
+                    </div>  
+    
+                    <div class="mt-4 flex flex-col">
+                        <span class="" v-if="metadata && metadata.showtime">
+                            <i class="pi pi-clock pr-2" style="font-size: .85rem"></i>{{ metadata.showtime }}
+                        </span>
+                        <a v-if="artist.socials?.instagramHandle" 
+                            :href="`https://instagram.com/${artist.socials.instagramHandle}`"
+                            target="_blank" rel="noopener noreferrer">
+    
+                            <i class="pi pi-instagram pr-2" style="font-size: .85rem"></i>
+                            <span class="underline text-primary">{{ artist.socials.instagramHandle }}</span>
+                        </a>
+    
+                    </div>
 
                 </div>
-
-                
-            </div>
-        </li>
-    </ul>
+            </AccordionContent>
+        </AccordionPanel>
+    </Accordion>
 </template>
+
+<style lang="css">
+</style>

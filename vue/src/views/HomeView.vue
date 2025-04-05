@@ -6,7 +6,7 @@
     import { DateTime } from 'luxon';
     import Artists from '@/components/index/Artists.vue';
     import { formatMetadata, type FormattedMetadata } from '@/lib/formatLiveMetadata';
-    import { ref, watch } from 'vue';
+    import { effect, ref, watch } from 'vue';
         
     const { data, isLoading, isError, isSuccess, error } = useNowPlayingData()
 
@@ -17,10 +17,12 @@
     }
 
     const currentArtistData = ref<FormattedMetadata | undefined>(undefined)
-    watch(data, async (metadata) => {
-        if(!metadata) { return }
 
-        currentArtistData.value = await formatMetadata(metadata)
+
+    effect(async () => {
+        if(!data.value) { return }
+
+        currentArtistData.value = await formatMetadata(data.value)
     })
 
 </script>
@@ -28,7 +30,7 @@
 <template >
     <div class="min-h-[500px] flex items-center">
         <div class="flex justify-center gap-2 flex-col md:flex-row lg:flex-row w-full lg:w-auto">
-            <div class="w-64 md:w-96 md:h-96 lg:w-96 lg:h-96 aspect-square border-2 border-black mx-auto lg:mx-0">
+            <div class="w-64 md:w-96 md:h-96 lg:w-96 lg:h-96 aspect-square border-2 border-surface-950 mx-auto lg:mx-0">
                 <div v-if="isSuccess && currentArtistData">
                     <img 
                         class="w-full h-full"
@@ -71,7 +73,7 @@
                     </div>
                 </div>
 
-                <hr class="border-t-black">
+                <hr class="border-t-surface-950">
     
                 <div class=" gap-2 mt-4">
                     <h2 class=" w-24">Coming Up:</h2>

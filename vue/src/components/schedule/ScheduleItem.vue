@@ -11,12 +11,12 @@
 
 <template>
     <div class="mx-auto max-w-[600px] font-sans">
-        <h1 class="bg-white w-fit font-bold">
+        <h1 class="bg-surface-50 w-fit font-bold">
             {{ event.start.toFormat("h:mma") }} - {{ event.end.toFormat("h:mma") }}
         </h1>
     
         <div
-            class="border-b-black border-b-2 max-w-[66%]"
+            class="border-b-surface-950 border-b-2 max-w-[66%]"
         ></div>
     
         <div

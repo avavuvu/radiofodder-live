@@ -47,6 +47,10 @@
 
 
 <style lang="css" scoped>
+    path {
+        fill: var(--p-surface-950);
+    }
+
     .fodder-circle {
         animation: spin 50s linear infinite;
         transform-origin: center center;

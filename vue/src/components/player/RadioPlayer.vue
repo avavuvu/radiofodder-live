@@ -61,7 +61,7 @@
 </script>
 
 <template>
-    <div class="sticky w-screen bottom-0 p-2 bg-white border-t border-t-black z-50">
+    <div class="sticky w-screen bottom-0 p-2 bg-white dark:bg-surface-50 border-t border-t-surface-950 z-50">
         <audio 
             ref="audioElement"
             :muted="muted"

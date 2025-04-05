@@ -60,7 +60,7 @@
 </script>
 
 <template>
-    <div class="max-w-[800px] mx-auto px-2 text-black">
+    <div class="max-w-[800px] mx-auto px-2 text-color">
         <div class="font-serif text-center pb-8">
             <h1 class="text-6xl font-bold">
                 {{startOfSchedule.year}} Schedule
@@ -90,7 +90,7 @@
                     <div
                         class="col-start-2 col-end-4 row-start-1 row-end-2 flex items-center justify-end text-right">
                         <h1
-                            class="text-6xl scale-y-150 my-auto h-24 overflow-hidden lg:overflow-visible"
+                            class="text-6xl scale-y-150 my-auto h-24 overflow-hidden lg:overflow-visible dark:bg-surface-50"
                         >
                             {{weekday}}
                         </h1>
@@ -117,7 +117,7 @@
                             <div
                                 v-else-if="event.type === 'break'" 
                                 class="mx-auto max-w-[200px]">
-                                <div class="border-y-black border-y-2 mt-4 bg-[white]">
+                                <div class="border-y-surface-950 border-y-2 mt-4 bg-surface-50">
                                     <p class="italic ">
                                         no programming between {{event.start.toFormat("h:mma")}} and {{event.end.toFormat("h:mma")}}
                                     </p>
@@ -126,7 +126,7 @@
                         </div>
     
                         <div v-if="events.length === 0" class="mx-auto max-w-[200px]">
-                            <div class="border-y-black border-y-2 mt-4 bg-white">
+                            <div class="border-y-surface-950 border-y-2 mt-4 bg-surface-50">
                                 <p class="italic ">
                                     no programming on {{weekday}}
                                 </p>

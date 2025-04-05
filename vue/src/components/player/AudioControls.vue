@@ -35,7 +35,7 @@ const updateMutedButton = () => {
 </script>
 
 <template>
-    <div class="flex text-black">
+    <div class="flex text-color">
         <button class="aspect-square h-12 w-12" aria-label="Volume Controls" @click="updateMutedButton">
             <i :class="volumeIcon" ></i>
         </button>

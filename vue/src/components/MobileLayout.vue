@@ -48,7 +48,7 @@ import RadioPlayer from './player/RadioPlayer.vue';
         </template>
     </Drawer>
 
-    <header class="bg-white sticky top-0 z-50">
+    <header class="bg-surface-950 sticky top-0 z-50">
         <div class="flex px-4 gap-2 items-center"><a class="py-2" href="/">
                 <div class="w-16"><svg  viewBox="0 0 250 250" width="100%" height="100%"
                         xmlns="http://www.w3.org/2000/svg">
@@ -120,10 +120,10 @@ import RadioPlayer from './player/RadioPlayer.vue';
                         <i class="pi pi-external-link" style="font-size: .75rem"></i>
                     </a>
                 </div>
-                <div class="border-b border-b-black"></div>
+                <div class="border-b border-b-surface-950"></div>
             </div>
         </div>
-        <div class="border-y flex gap-1 border-y-black italic">
+        <div class="border-y flex gap-1 border-y-surface-950 italic">
             <div class="py-2">
                 <div class="marquee">
                     <Marquee :repeats="2">
