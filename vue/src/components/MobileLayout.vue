@@ -48,7 +48,7 @@ import RadioPlayer from './player/RadioPlayer.vue';
         </template>
     </Drawer>
 
-    <header class="bg-surface-950 sticky top-0 z-50">
+    <header class="bg-white dark:bg-surface-50 sticky top-0 z-50">
         <div class="flex px-4 gap-2 items-center"><a class="py-2" href="/">
                 <div class="w-16"><svg  viewBox="0 0 250 250" width="100%" height="100%"
                         xmlns="http://www.w3.org/2000/svg">

@@ -46,7 +46,7 @@
     <Accordion class="transition-all" >
         <AccordionPanel 
             v-for="{artist, metadata}, index in artists" 
-            :value="index" class="mb-12 max-w-[100ch]" >
+            :value="index" class="mb-12 max-w-[100ch] px-2" >
 
             <AccordionHeader class="flex h-32 gap-2 m-4 !text-color hover:!text-color">
                 <component

@@ -23,6 +23,7 @@
         if(!data.value) { return }
 
         currentArtistData.value = await formatMetadata(data.value)
+        document.title = `${currentArtistData.value.title} – Radio Fodder`
     })
 
 </script>
