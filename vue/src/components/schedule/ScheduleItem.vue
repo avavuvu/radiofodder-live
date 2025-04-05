@@ -7,7 +7,6 @@
         artist?: Artist
     }>()
 
-
 </script>
 
 <template>

@@ -4,13 +4,9 @@
     import PausePlayControls from './PausePlayControls.vue'
     import AudioControls from './AudioControls.vue'
     import { useNowPlayingData } from '@/lib/useNowPlayingData'
+    import { playStore } from '@/lib/playState'
 
     const { data, isLoading, isError, isSuccess } = useNowPlayingData()
-
-    const showChatDrawer = ref(false)
-    const openChat = () => {
-        showChatDrawer.value = true
-    }
 
     const audioElement = ref<HTMLAudioElement>()
 
@@ -21,13 +17,16 @@
 
     const playState = computed<"paused" | "playing" | "loading">(() => {
         if(playHasBeenPressed.value && !hasLoaded.value) {
+            playStore.state = "loading"
             return "loading"
         }
 
         if(playHasBeenPressed.value && hasLoaded.value) {
+            playStore.state = "playing"
             return "playing"
         }
 
+        playStore.state = "paused"
         return "paused"
     })
 
@@ -35,7 +34,15 @@
         if(audioElement.value?.paused) {
             //play
             playHasBeenPressed.value = true
+
+            // this is hack to force a reload. it tricks the browser into thinking its a new resource. 
+            // the cache-bust query is completely irrelevant.
+            // i swear this used to just work without needing to do the cache busting, but it stopped,
+            // at least for me on firefox.
+            const url = "https://radio-fodder.radiocult.fm/stream?cache-bust=" + new Date().getTime();
+            audioElement.value.src = url
             audioElement.value.load()
+
             await audioElement.value.play()
 
         }else if(!audioElement.value?.paused) {
@@ -54,10 +61,11 @@
 </script>
 
 <template>
-    <div class=" sticky bottom-0 bg-primary border-t-surface-950 border-t-2 z-50">
+    <div class="sticky w-screen bottom-0 p-2 bg-white border-t border-t-black z-50">
         <audio 
             ref="audioElement"
             :muted="muted"
+            preload="auto"
             :volume="volume" >
             
             <source src="https://radio-fodder.radiocult.fm/stream" />
@@ -66,8 +74,7 @@
             Your browser does not support the audio element.
         </audio>
 
-        <div class=" min-h-24 max-h-12 
-            flex max-w-main mx-auto">
+        <div class="h-24 grid grid-cols-[6rem_auto] gap-2 max-w-main mx-auto">
             <PausePlayControls 
                 @togglePlaying="togglePlaying"
                 :playState="playState"/>
@@ -76,8 +83,8 @@
                 <div class="min-w-52 grid grid-rows-2 h-full">
                     <div>
                         <div v-if="isLoading">
-                            <Skeleton width="14rem" class="my-1 !bg-primary-100"/>
-                            <Skeleton width="5rem" class="my-1 !bg-primary-100"/>
+                            <Skeleton width="14rem" class="my-1"/>
+                            <Skeleton width="5rem" class="my-1"/>
                         </div>
                         <div v-else-if="isError">
                             ERRROR
@@ -96,36 +103,9 @@
     
                 </div>
             </div>
-    
-    
-            <div class="min-w-24 hidden lg:block md:block !p-2">
-                <Button class="!mx-auto !w-full !h-full !aspect-square !bg-highlight" icon="pi pi-comment" aria-label="Open Chat" @click="openChat">
-                </Button>
-            </div>
+
 
         </div>
     </div>
-
-    <Drawer 
-        position="right"
-        class="sm:!w-[80%] md:!w-80 lg:!w-[30rem]"
-        v-model:visible="showChatDrawer">
-        <template #container="{ closeCallback }" class="h-[100dvh]">
-
-            <iframe
-                title="Radio Fodder chat room"
-                src="https://app.radiocult.fm/embed/chat/radio-fodder?theme=midnight&primaryColor=%23e1c7ff&corners=rounded&removeRcBranding=true"
-                width="100%"
-                height="100%"
-                scrolling="no"
-                frameborder="0"
-                seamless
-                allowtransparency="true"
-                style=""
-                >
-            </iframe>
-
-        </template>
-    </Drawer>
 
 </template>

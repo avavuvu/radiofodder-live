@@ -4,9 +4,10 @@
     import PlaceholerArtwork from "@/components/placeholder/PlaceholderArtwork.vue"
     import { useDaySchedule } from '@/lib/useDaySchedule';
     import { DateTime } from 'luxon';
-    import ArtistsList from '@/components/index/ArtistsList.vue';
+    import Artists from '@/components/index/Artists.vue';
+    import { formatMetadata, type FormattedMetadata } from '@/lib/formatLiveMetadata';
+    import { ref, watch } from 'vue';
         
-
     const { data, isLoading, isError, isSuccess, error } = useNowPlayingData()
 
     const { data: dayData, isLoading: isDayLoading, isError: isDayError, isSuccess: isDaySuccess, error: dayError }  = useDaySchedule()
@@ -14,47 +15,75 @@
     const convertIsoTimeStringToHuman = (isoTime: string) => {
         return DateTime.fromISO(isoTime).toFormat('h:mma').toLowerCase() 
     }
+
+    const currentArtistData = ref<FormattedMetadata | undefined>(undefined)
+    watch(data, async (metadata) => {
+        if(!metadata) { return }
+
+        currentArtistData.value = await formatMetadata(metadata)
+    })
+
 </script>
 
 <template >
-    <div class="flex items-center justify-center min-h-[500px] gap-8 flex-col md:flex-row lg:flex-row">
-        <div class="flex  gap-2 flex-col md:flex-row lg:flex-row w-full lg:w-auto">
-            <div class="w-52 md:w-96 lg:w-96 aspect-square border-2 border-black">
-                <div v-if="isSuccess && data?.metadata.artwork">
+    <div class="min-h-[500px] flex items-center">
+        <div class="flex justify-center gap-2 flex-col md:flex-row lg:flex-row w-full lg:w-auto">
+            <div class="w-64 md:w-96 md:h-96 lg:w-96 lg:h-96 aspect-square border-2 border-black mx-auto lg:mx-0">
+                <div v-if="isSuccess && currentArtistData">
                     <img 
-                        class="w-full h-full p-8"
-                        :src="data!.metadata.artwork!.default">
+                        class="w-full h-full"
+                        :src="currentArtistData.imageSource">
                 </div>
-                <div v-else class="p-8">
+                <div v-else class="">
                     <PlaceholerArtwork/>
                 </div>
             </div>
     
-            <div class="w-48 md:w-96 lg:w-96 mx-auto lg:mx-0">
-                <div class="flex gap-2">
+            <div class="max-w-[520px] mx-auto px-8">
+                <div class="mb-2 min-h-[5rem]">
                     <h2 class="w-24">Now Playing:</h2>
-                    <div v-if="isLoading">
+                    <div class="ml-4" v-if="isLoading">
                         <Skeleton width="14rem" class="my-1"/>
-                        <Skeleton width="5rem" class="my-1"/>
+                        <Skeleton width="10rem" class="my-1"/>
+                        <Skeleton width="4rem" class="my-1"/>
                     </div>
                     <div v-else-if="isError">
-                        ERROR: {{ error?.message }}
+                        <span class="ml-4">ERROR: {{ error?.message }}</span>
                     </div>
-                    <div v-else-if="isSuccess">
-                        <h1 class="line-clamp-1 text-ellipsis font-bold">{{ data!.metadata.title }}</h1>
-                        <h2>{{ data!.metadata.artist }}</h2>
+                    <div class="ml-4" v-else-if="isSuccess && currentArtistData">
+                        <component 
+                            :is="currentArtistData?.instagramLink ? 'a' : 'span'"
+                            :href="currentArtistData?.instagramLink  ? currentArtistData?.instagramLink : ''"
+                            target="_blank" rel="noopener noreferrer"
+                            class="inline-flex justify-between w-full">
+                            <span>
+                                <span class="font-bold">
+                                    {{ currentArtistData.title  }} 
+                                </span>
+                            </span>
+                            <span v-if="currentArtistData?.instagramLink">
+                                <i class="pi pi-external-link" style="font-size: .75rem"></i>
+                            </span>
+                        </component> 
+
+                        <span v-if="currentArtistData.description.type === 'html'" v-html="currentArtistData?.description.data"></span>
+                        <p v-else> {{ currentArtistData.description.data }}</p>
                     </div>
                 </div>
+
+                <hr class="border-t-black">
     
-                <div class="flex gap-2 mt-4">
+                <div class=" gap-2 mt-4">
                     <h2 class=" w-24">Coming Up:</h2>
-                    <div v-if="isDayLoading">
+                    <div class="ml-4" v-if="isDayLoading">
                         <Skeleton width="14rem" class="my-1"/>
+                        <Skeleton width="12rem" class="my-1"/>
+                        <Skeleton width="3rem" class="my-1"/>
                     </div>
-                    <div v-else-if="isDayError">
+                    <div class="ml-4" v-else-if="isDayError">
                         ERROR: {{ dayError?.message }}
                     </div>
-                    <div v-else-if="isDaySuccess">
+                    <div class="ml-4" v-else-if="isDaySuccess">
                         <ul class="">
                             <li v-for="schedule in dayData">
                                 <span class="font-bold"> {{convertIsoTimeStringToHuman(schedule.start) }}</span>
@@ -70,35 +99,7 @@
     </div>
 
     <section>
-        <h1 class="text-2xl">Our Shows</h1>
-        <Suspense>
-            <template #default>
-                <ArtistsList />
-            </template>
-            <template #fallback>
-                <ul class="ml-8">
-                    <li v-for="artist in ['','','']" >
-                        <div class="flex h-24 gap-2 m-4">
-                            <div class="h-full aspect-square border-2 border-surface-900">
-                                <div class="h-full ">
-                                </div>
-                            </div>
-
-                            <div>
-                                <Skeleton width="12rem" class="my-1"/>
-                
-                                <Skeleton width="24rem" class="my-1"/>
-
-                                <Skeleton width="6rem" class="my-1"/>
-
-                            </div>
-
-                            
-                        </div>
-                    </li>
-                </ul>
-            </template>
-        </Suspense>
+        <Artists/>
     </section>
 
 

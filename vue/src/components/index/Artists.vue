@@ -11,11 +11,11 @@
                 <ArtistsList />
             </template>
             <template #fallback>
-                <ul class="ml-8">
+                <ul class="">
                     <li v-for="artist in ['','','']" >
-                        <div class="flex h-24 gap-2 m-4">
+                        <div class="flex h-32 gap-2 m-4 max-w-[100ch]">
                             <div class="h-full aspect-square border-2 border-surface-900">
-                                <div class="h-full ">
+                                <div class="h-full  ">
                                 </div>
                             </div>
 

@@ -35,8 +35,10 @@ const updateMutedButton = () => {
 </script>
 
 <template>
-    <div class="flex">
-        <Button class="!aspect-auto !min-w-12 !bg-highlight" aria-label="Volume Controls" :icon="volumeIcon" @click="updateMutedButton"></Button>
+    <div class="flex text-black">
+        <button class="aspect-square h-12 w-12" aria-label="Volume Controls" @click="updateMutedButton">
+            <i :class="volumeIcon" ></i>
+        </button>
         <input 
             type="range"
             class="max-w-24"

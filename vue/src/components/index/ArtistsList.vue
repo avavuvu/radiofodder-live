@@ -1,35 +1,44 @@
 <script setup lang="ts">
     import { fetchArtists, fetchArtist } from '@/lib/fetchArtists';
     import PlaceholderArtwork from '../placeholder/PlaceholderArtwork.vue';
-    import { getJsonContent } from '@/lib/getJsonContent';
+    import { getBasicJsonContent, getHtmlFromTipTapJson, getYamlFromTipTapJson } from '@/lib/getJsonContent';
     import { fetchDaySchedule } from '@/lib/useDaySchedule';
-    import type { Artist } from '@/lib/types';
+    import type { Artist, CustomShowMetadata } from '@/lib/types';
 
-    const fetchArtistsAndSchedule = async () => {
-        const daySchedule = await fetchDaySchedule()
+    // const fetchArtistsAndSchedule = async () => {
+    //     const daySchedule = await fetchDaySchedule()
 
-        let artists: Artist[] = []
+    //     let artists: Artist[] = []
 
-        for (const scheduleEvent of daySchedule) {
-            const artistId = scheduleEvent.artistIds?.[0]
+    //     for (const scheduleEvent of daySchedule) {
+    //         const artistId = scheduleEvent.artistIds?.[0]
 
-            if (!artistId) {
-                //TODO: return a default "show" object
-                console.log("No artsit attachted to event:", scheduleEvent)
-                continue
-            }
+    //         if (!artistId) {
+    //             //TODO: return a default "show" object
+    //             console.log("No artsit attachted to event:", scheduleEvent)
+    //             continue
+    //         }
 
-            console.log(await fetchArtist(artistId))
+    //         console.log(await fetchArtist(artistId))
 
-            artists.push(await fetchArtist(artistId))
+    //         artists.push(await fetchArtist(artistId))
+    //     }
+
+    //     return artists
+    // }
+
+    const artists: {artist: Artist, metadata: CustomShowMetadata | null}[] = (await fetchArtists()).map(artist => {
+        let metadata: null | CustomShowMetadata = null
+        
+        if(artist.description) {
+            metadata = getYamlFromTipTapJson(artist.description)
         }
 
-        return artists
-    }
-
-    const artists = await fetchArtistsAndSchedule()
-
-
+        return {
+            artist,
+            metadata: metadata
+        }
+    })
 
     interface SocialsInterface  {
         twitterHandle?: string;
@@ -69,31 +78,48 @@
 </script>
 
 <template>
-    <ul class="ml-8">
-        <li v-for="artist in artists" >
-            <div class="flex h-24 gap-2 m-4">
-                <div class="h-full aspect-square border-2 border-surface-900">
+    <ul class="">
+        <li v-for="{artist, metadata} in artists" >
+            <div class="flex h-32 gap-2 m-4 max-w-[100ch]">
+                <component
+                    :is="artist.socials?.instagramHandle ? 'a' : 'span'"
+                    :href="artist.socials?.instagramHandle ? `https://instagram.com/${artist.socials.instagramHandle}`: ''"
+                    target="_blank" rel="noopener noreferrer"
+                    class="h-full aspect-square border-2 border-surface-900 block">
                     <img v-if="artist.logo?.default" class="h-full object-cover" :src="artist.logo?.default">
-                    <div v-else class="h-full ">
+                    <div v-else class="h-full">
                         <PlaceholderArtwork/>
                     </div>
-                </div>
+                </component>
 
-                <div>
-                    <span v-if="artist.name" class="font-bold">{{ artist.name }}</span>
+                <div class="w-full">
+                    <component 
+                        :is="artist.socials?.instagramHandle ? 'a' : 'span'"
+                        :href="artist.socials?.instagramHandle ? `https://instagram.com/${artist.socials.instagramHandle}`: ''"
+                        target="_blank" rel="noopener noreferrer"
+                        class="inline-flex justify-between w-full"
+                        v-if="artist.name" >
+                        <span>
+                            <span class="font-bold">
+                                {{ artist.name }} 
+                            </span>
+                            <span v-if="metadata && metadata.hosts"> 
+                                – with {{ metadata.hosts }}
+                            </span> 
+                        </span>
+                        <span v-if="artist.socials?.instagramHandle">
+                            <i class="pi pi-external-link" style="font-size: .75rem"></i>
+                        </span>
+                    </component> 
                     <span v-else class="italic font-bold">no artist name</span>
     
-    
-                    <p v-if="artist.description">{{ getJsonContent(artist.description) }}</p>
+                    <div class="line-clamp-2 ml-2" 
+                        v-if="artist.description" 
+                        v-html="getHtmlFromTipTapJson(artist.description)"></div>
 
-                    <p v-if="artist.socials">{ 
-                        <span v-for="[key, handle] in Object.entries(artist.socials!)">
-                            <a :href="`${socialsMap[key as keyof SocialsInterface]!.site}${handle}`">
-                                <i :class="`pi ${socialsMap[key as keyof SocialsInterface]!.icon}`"></i>
-                                <span class="ml-2">{{ handle }}</span>
-                            </a>
-                        </span>
-                    }</p>
+                    <span v-if="metadata && metadata.showtime">
+                        {{ metadata.showtime }}
+                    </span>
 
                 </div>
 

@@ -13,6 +13,7 @@ export const useNowPlayingData = () => {
         queryKey: ['result'],
         queryFn: fetchRadioData,
         refetchOnWindowFocus: true,
+        staleTime: 2 * 60 * 1000
     })
 }
 

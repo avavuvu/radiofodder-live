@@ -61,6 +61,10 @@ export type RadioCultLiveData = {
     metadata: RadioCultMetadata
 } 
 
+export type CustomShowMetadata = {
+    showtime?: string,
+    hosts?: string
+}
 
 interface TextNode {
     type: 'text';
