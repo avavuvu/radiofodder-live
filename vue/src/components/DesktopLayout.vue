@@ -106,7 +106,7 @@ import SpinningLogo from './SpinningLogo.vue';
                 </div>
             </div>
             <div 
-                class="sticky top-0 h-[calc(100vh-6rem)] bg-black desktop-chat-container" 
+                class="sticky top-0 h-[calc(100vh-7rem)] bg-black desktop-chat-container" 
                 :class="isChatOpen ? '' : 'chat-hidden' " 
                 ref="desktopChatContainer">
             </div>

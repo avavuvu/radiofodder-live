@@ -16,7 +16,7 @@
                 </a>
             </div>
             <div class="w-fit italic text-gray-500 dark:text-gray-300">
-                <a href="https://adamdinhvu.com">This website was made with love by Ava Vu ♥ </a>
+                <a href="https://avavu.au">This website was made with love by <span class="underline">Ava Vu</span> ♥ </a>
 
             </div>
         </div>
