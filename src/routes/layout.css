@@ -1,0 +1,26 @@
+@import 'tailwindcss';
+@import './icons.css';
+
+@theme {
+
+
+    --default-font-family: "Times", "Times New Roman", "serif";
+}
+
+:root {
+    --color-primary: #418BFC;
+    --color-border: var(--color-primary);
+    --color-surface: #fcfcfc;
+    --logo-size: 8em;
+	--spacing: 4em;
+	--block-size: 5em;
+}
+
+body {
+    background-color: var(--color-surface);
+}
+
+*::selection  {
+    background-color: var(--color-primary);
+    color: var(--color-surface);
+}
