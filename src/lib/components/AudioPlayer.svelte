@@ -124,6 +124,7 @@
 		align-items: center;
 		gap: 1em;
 		padding: 0.5em 1em;
+		height: var(--block-size);
 		background-color: var(--color-surface);
 		color: var(--color-primary);
 		border-top: 1px solid var(--color-border);

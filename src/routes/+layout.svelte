@@ -197,10 +197,12 @@
 
 		& .mobile-background-hack {
 		    display: none;
+			z-index: 799;
 		}
 
 		& .logo {
 			grid-area: logo;
+			z-index: 800;
 		}
 
 		& .marquee-row {
@@ -212,6 +214,7 @@
 			overflow: hidden;
 			border-top: 1px solid var(--color-border);
 			border-bottom: 1px solid var(--color-border);
+			z-index: 800;
 
 			& :global(.marquee) {
 				flex: 1;
@@ -278,7 +281,7 @@
 		& .header-bar {
 			grid-area: nav;
 			display: flex;
-			z-index: 1000;
+			z-index: 800;
 
 
 			justify-content: space-between;
@@ -452,7 +455,7 @@
  			top: 0;
  			right: 0;
  			bottom: 0;
- 			z-index: 100;
+ 			z-index: 1000;
  			transform: translateX(100%);
  			transition: transform 300ms ease;
 
@@ -476,7 +479,7 @@
  			display: block;
  			position: fixed;
  			inset: 0;
- 			z-index: 90;
+ 			z-index: 999;
  			border: none;
  			padding: 0;
  			background-color: rgb(0 0 0 / 0%);

@@ -11,9 +11,13 @@
 
 <style>
     iframe {
-        max-height: 100vh;
-        max-height: 100dvh;
+        max-height: 90vh;
+        max-height: calc(100dvh - var(--block-size));
         position: sticky;
         top: 0;
+
+        @media (max-width: 48em) {
+            max-height: 100dvh;
+        }
     }
 </style>
